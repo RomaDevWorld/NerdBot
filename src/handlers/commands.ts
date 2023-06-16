@@ -10,20 +10,22 @@ config()
 module.exports = (client: Client) => {
   const slashCommands: SlashCommandBuilder[] = []
 
-  let commandsDir = join(__dirname, '../commands')
+  const commandsDir = join(__dirname, '../commands')
 
   readdirSync(commandsDir).forEach((file) => {
-    let command: SlashCommand = require(`${commandsDir}/${file}`).default
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const command: SlashCommand = require(`${commandsDir}/${file}`).default
     slashCommands.push(command.command)
     client.slashCommands.set(command.command.name, command)
   })
 
-  const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN!)
+  const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN as string)
 
   rest
-    .put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!), {
+    .put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID as string), {
       body: slashCommands.map((command) => command.toJSON()),
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .then((data: any) => {
       console.log(`Successfully loaded ${data.length} slash commands`)
     })
