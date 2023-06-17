@@ -31,7 +31,7 @@ export interface ApiResponse {
     name: string
     code: string
     confidence: number
-    sourse: string
+    source: string
   }
   matches: ApiResponseMatch[] | []
   sentenceRanges: number[]
@@ -55,7 +55,7 @@ export interface ApiResponseMatch {
   rule: {
     id: string
     subId: string
-    sourseFile: string
+    sourceFile: string
     description: string
     issueType: string
     category: {

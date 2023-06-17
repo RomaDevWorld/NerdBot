@@ -39,7 +39,7 @@ const event: BotEvent = {
     if (!matches[0]) return
 
     message
-      .reply(`🤓☝️\n${matches.map((match: ApiResponseMatch, index: number) => `${index + 1}. ${match.message}`).join('\n')}`)
+      .reply(matches.length === 1 ? `🤓☝️ ${matches[0].message}` : `🤓☝️\n${matches.map((match: ApiResponseMatch, index: number) => `${index + 1}. ${match.message}`).join('\n')}`)
       .then((msg) => {
         msg.react('🤓').catch((error) => console.error(error))
       })
