@@ -7,7 +7,7 @@ const cooldown = new Set()
 const event: BotEvent = {
   name: 'messageCreate',
   execute: async (message: Message) => {
-    if (message.author.bot) return
+    if (message.author.bot || !message.content) return
 
     const ignoredRules = ['UPPERCASE_SENTENCE_START', 'UK_SIMPLE_REPLACE']
 

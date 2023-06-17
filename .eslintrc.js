@@ -16,5 +16,6 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     indent: ['error', 2],
     semi: ['warn', 'never'],
+    'no-multiple-empty-lines': ['warn', { max: 1 }],
   },
 }

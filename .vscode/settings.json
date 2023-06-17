@@ -9,7 +9,8 @@
         ".vscode",
         ".vscode-insiders",
         "tsconfig.json",
-        ".eslint*"
+        ".eslint*",
+        "package*"
     ],
     "cSpell.words": [
         "cooldown",
