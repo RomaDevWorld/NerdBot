@@ -34,6 +34,11 @@ const event: BotEvent = {
       } catch (error) {
         console.error(error)
       }
+    } else if (interaction.isButton()) {
+      const button = interaction.client.buttons.get(interaction.customId)
+      button?.button.data
+      if (!button) return
+      button.execute(interaction)
     }
   },
 }

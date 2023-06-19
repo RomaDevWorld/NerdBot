@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { AutocompleteInteraction, Collection, CommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { AutocompleteInteraction, ButtonBuilder, ButtonInteraction, Collection, CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 export interface BotEvent {
   name: string
@@ -12,6 +12,11 @@ export interface SlashCommand {
   execute: (interaction: CommandInteraction) => void
   autocomplete?: (interaction: AutocompleteInteraction) => void
   cooldown?: number
+}
+
+export interface Button {
+  button: ButtonBuilder | any // For some reason "ButtonBuilder" does not provide "custom_id"
+  execute: (interaction: ButtonInteraction) => void
 }
 
 export interface ApiResponse {
@@ -71,6 +76,7 @@ export interface ApiResponseMatch {
 declare module 'discord.js' {
   export interface Client {
     slashCommands: Collection<string, SlashCommand>
+    buttons: Collection<string, Button>
     cooldowns: Collection<string, number>
   }
 }
