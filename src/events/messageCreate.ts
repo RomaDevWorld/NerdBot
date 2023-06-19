@@ -15,7 +15,7 @@ const event: BotEvent = {
 
     await connect()
     const isOn = await PersonalSettings.findOne<PersonalSettingsI>({ userId: message.author.id })
-    if (!isOn?.active) return
+    if (isOn?.active === false) return
 
     const response = await axios
       .post<ApiResponse>(
