@@ -1,18 +1,24 @@
-import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js'
 import { SlashCommand } from '../../types'
-import Hello from '../components/buttons/Hello'
+import PersonalToggle from '../components/buttons/PersonalToggle'
+import connect from '../lib/mongodb'
+import PersonalSettings, { PersonalSettingsI } from '../models/PersonalSettings'
 
-const command: SlashCommand = {
-  command: new SlashCommandBuilder().setName('config').setDescription('Configure bot behavior'),
-  execute: (interaction) => {
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(Hello.button)
-    interaction.reply({
-      content: `Hello`,
-      components: [row],
-      ephemeral: true,
-    })
+const ClearCommand: SlashCommand = {
+  command: new SlashCommandBuilder().setName('config').setDescription('Shows config panel'),
+  execute: async (interaction) => {
+    await connect()
+    const button = new ButtonBuilder(PersonalToggle.button.data)
+
+    const config = await PersonalSettings.findOne<PersonalSettingsI>({ userId: interaction.user.id })
+
+    config && config.active ? button.setStyle(ButtonStyle.Success) : button.setStyle(ButtonStyle.Danger)
+    config && config.active ? button.setLabel('ON') : button.setLabel('OFF')
+
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button)
+    await interaction.reply({ content: 'Toggle bot ON or OFF', components: [row], ephemeral: true })
   },
   cooldown: 10,
 }
 
-export default command
+export default ClearCommand

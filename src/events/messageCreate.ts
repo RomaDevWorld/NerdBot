@@ -1,17 +1,21 @@
 import { Message } from 'discord.js'
 import { ApiResponse, ApiResponseMatch, BotEvent } from '../../types'
 import axios from 'axios'
+import connect from '../lib/mongodb'
+import PersonalSettings, { PersonalSettingsI } from '../models/PersonalSettings'
 
 const cooldown = new Set()
+
+const ignoredRules = ['UPPERCASE_SENTENCE_START', 'UK_SIMPLE_REPLACE']
 
 const event: BotEvent = {
   name: 'messageCreate',
   execute: async (message: Message) => {
-    if (message.author.bot || !message.content) return
+    if (message.author.bot || !message.content || cooldown.has(message.author.id)) return
 
-    const ignoredRules = ['UPPERCASE_SENTENCE_START', 'UK_SIMPLE_REPLACE']
-
-    if (cooldown.has(message.author.id)) return
+    await connect()
+    const isOn = await PersonalSettings.findOne<PersonalSettingsI>({ userId: message.author.id })
+    if (!isOn?.active) return
 
     const response = await axios
       .post<ApiResponse>(
