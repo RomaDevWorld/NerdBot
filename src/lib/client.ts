@@ -3,7 +3,7 @@ import { config } from 'dotenv'
 import { Button, SlashCommand } from '../../types'
 config()
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] })
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] })
 
 client.slashCommands = new Collection<string, SlashCommand>()
 client.cooldowns = new Collection<string, number>()
