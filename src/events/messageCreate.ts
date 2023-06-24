@@ -11,17 +11,21 @@ const ignoredRules = ['UPPERCASE_SENTENCE_START', 'UK_SIMPLE_REPLACE']
 const event: BotEvent = {
   name: 'messageCreate',
   execute: async (message: Message) => {
-    if (message.author.bot || !message.content || cooldown.has(message.author.id)) return
+    if (message.author.bot || cooldown.has(message.author.id)) return
 
     await connect()
     const isOn = await PersonalSettings.findOne<PersonalSettingsI>({ userId: message.author.id })
     if (isOn?.active === false) return
 
+    const content = message.content.replace(/<[^>]+>/g, '')
+    if (content === '?') return
+    if (!content) return
+
     const response = await axios
       .post<ApiResponse>(
         'https://api.languagetoolplus.com/v2/check',
         {
-          text: message.content,
+          text: content,
           language: 'auto',
           enabledOnly: 'false',
         },
