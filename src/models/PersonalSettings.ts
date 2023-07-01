@@ -11,6 +11,10 @@ const PersonalSettings = new Schema({
     default: true,
     required: true,
   },
+  preferred: {
+    type: Array<string>,
+    default: [],
+  },
 })
 
 export default models.Post || model('PersonalSettings', PersonalSettings)
@@ -18,4 +22,5 @@ export default models.Post || model('PersonalSettings', PersonalSettings)
 export interface PersonalSettingsI {
   userId: string
   active: boolean
+  preferred: string[] | []
 }

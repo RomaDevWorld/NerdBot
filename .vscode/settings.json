@@ -1,19 +1,6 @@
 {
-    "editor.tabSize": 2,
-    "prettier.prettierPath": "./node_modules/prettier",
-    "cSpell.ignorePaths": [
-        "package-lock.json",
-        "node_modules",
-        "vscode-extension",
-        ".git/objects",
-        ".vscode",
-        ".vscode-insiders",
-        "tsconfig.json",
-        ".eslint*",
-        "package*"
-    ],
-    "cSpell.words": [
-        "cooldown",
-        "cooldowns"
-    ]
+  "editor.tabSize": 2,
+  "prettier.prettierPath": "./node_modules/prettier",
+  "cSpell.ignorePaths": ["package-lock.json", "node_modules", "vscode-extension", ".git/objects", ".vscode", ".vscode-insiders", "tsconfig.json", ".eslint*", "package*"],
+  "cSpell.words": ["balear", "cooldown", "cooldowns"]
 }

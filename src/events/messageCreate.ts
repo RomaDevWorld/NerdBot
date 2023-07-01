@@ -14,8 +14,8 @@ const event: BotEvent = {
     if (message.author.bot || cooldown.has(message.author.id)) return
 
     await connect()
-    const isOn = await PersonalSettings.findOne<PersonalSettingsI>({ userId: message.author.id })
-    if (isOn?.active === false) return
+    const config = await PersonalSettings.findOne<PersonalSettingsI>({ userId: message.author.id })
+    if (config?.active === false) return
 
     const content = message.content.replace(/<[^>]+>/g, '')
     if (content === '?') return
@@ -28,6 +28,7 @@ const event: BotEvent = {
           text: content,
           language: 'auto',
           enabledOnly: 'false',
+          preferredVariants: config?.preferred.join(',') || 'en-US',
         },
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded', accept: 'application/json' } }
       )
@@ -43,6 +44,7 @@ const event: BotEvent = {
       cooldown.delete(message.author.id)
     }, 15000)
 
+    if (!config?.preferred.includes(response.data.language as never)) return
     if (response.data.language.code === 'ru-RU') return
     if (!matches[0]) return
 

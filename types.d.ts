@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { AutocompleteInteraction, ButtonBuilder, ButtonInteraction, Collection, CommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { AutocompleteInteraction, ButtonBuilder, ButtonInteraction, ChatInputCommandInteraction, Collection, SlashCommandBuilder } from 'discord.js'
 
 export interface BotEvent {
   name: string
@@ -9,7 +9,7 @@ export interface BotEvent {
 
 export interface SlashCommand {
   command: SlashCommandBuilder
-  execute: (interaction: CommandInteraction) => void
+  execute: (interaction: ChatInputCommandInteraction) => void
   autocomplete?: (interaction: AutocompleteInteraction) => void
   cooldown?: number
 }
