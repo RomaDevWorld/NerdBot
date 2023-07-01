@@ -18,8 +18,7 @@ const event: BotEvent = {
     if (config?.active === false) return
 
     const content = message.content.replace(/<[^>]+>/g, '')
-    if (content === '?') return
-    if (!content) return
+    if (!content || content === '?') return
 
     const response = await axios
       .post<ApiResponse>(
@@ -44,12 +43,16 @@ const event: BotEvent = {
       cooldown.delete(message.author.id)
     }, 15000)
 
-    if (!config?.preferred.includes(response.data.language as never)) return
+    if (!config?.preferred.includes(response.data.language.code as never)) return
     if (response.data.language.code === 'ru-RU') return
     if (!matches[0]) return
 
     message
-      .reply(matches.length === 1 ? `🤓☝️ ${matches[0].message}` : `🤓☝️\n${matches.map((match: ApiResponseMatch, index: number) => `${index + 1}. ${match.message}`).join('\n')}`)
+      .reply(
+        matches.length === 1
+          ? `🤓☝️ ${matches[0].message}`
+          : `🤓☝️\n${matches.map((match: ApiResponseMatch, index: number) => `${index + 1}. ${match.message}`).join('\n')}`
+      )
       .then((msg) => {
         msg.react('🤓').catch((error) => console.error(error))
       })
