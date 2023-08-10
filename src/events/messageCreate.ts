@@ -1,4 +1,4 @@
-import { ChannelType, Message, ThreadAutoArchiveDuration } from 'discord.js'
+import { Message } from 'discord.js'
 import { ApiResponse, ApiResponseMatch, BotEvent } from '../../types'
 import axios from 'axios'
 import connect from '../lib/mongodb'
