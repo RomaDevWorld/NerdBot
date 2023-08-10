@@ -48,7 +48,7 @@ const event: BotEvent = {
     if (!matches[0]) return
 
     const thread = await message.startThread({
-      name: `${message.content}`,
+      name: content.slice(0, 100),
     })
 
     thread
