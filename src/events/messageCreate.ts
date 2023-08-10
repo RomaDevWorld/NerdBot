@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { ChannelType, Message, ThreadAutoArchiveDuration } from 'discord.js'
 import { ApiResponse, ApiResponseMatch, BotEvent } from '../../types'
 import axios from 'axios'
 import connect from '../lib/mongodb'
@@ -43,20 +43,25 @@ const event: BotEvent = {
       cooldown.delete(message.author.id)
     }, 15000)
 
-    if (!config?.preferred.includes(response.data.language.code as never)) return
+    if (config && !config?.preferred.includes(response.data.language.code as never)) return
     if (response.data.language.code === 'ru-RU') return
     if (!matches[0]) return
 
-    message
-      .reply(
+    const thread = await message.startThread({
+      name: `${message.content}`,
+    })
+
+    thread
+      .send(
         matches.length === 1
           ? `🤓☝️ ${matches[0].message}`
           : `🤓☝️\n${matches.map((match: ApiResponseMatch, index: number) => `${index + 1}. ${match.message}`).join('\n')}`
       )
-      .then((msg) => {
-        msg.react('🤓').catch((error) => console.error(error))
-      })
       .catch((error) => console.error(error))
+
+    setTimeout(() => {
+      thread.setArchived(true).catch((err) => console.error(err))
+    }, 30000)
   },
 }
 
